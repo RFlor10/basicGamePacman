@@ -1,0 +1,34 @@
+import wollok.game.*
+import example.*
+
+program pacmanGame {
+	
+	game.title("Pacman!")
+	
+	// límites del juego
+	game.width(14)
+	game.height(8)
+	
+	// fondo
+	game.boardGround("pacmanBackground.jpg")
+	
+	// personaje principal
+	game.addVisualCharacter(pacman)
+
+	// rivales
+	const rivales = [new Rival(numero=1), new Rival(numero=2),new Rival(numero=3),new Rival(numero=4)]
+	
+	rivales.forEach { rival => 
+		game.addVisual(rival)
+		game.whenCollideDo(rival, { personaje =>
+			personaje.chocarCon(rival) // se maneja un método polimórfico
+		})
+		game.onTick(1.randomUpTo(5) * 500, "movimiento", {
+			rival.acercarseA(pacman)
+		})
+	}
+	
+	// que arranque el juego!
+	game.start()
+	
+}
