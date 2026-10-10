@@ -41,7 +41,7 @@ class Frutita {
 	}
 }
 
-object generadorDeFrutas {
+object generadorDeFrutas {  // todo esto fue consultado con IA. DEBO PRACTICARLO SI O SI!
 	method crear(cantidad) {
 		const posicionesLibres = []
 		game.width().times { x =>
