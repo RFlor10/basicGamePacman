@@ -1,0 +1,67 @@
+/*program abc{
+    //que arranque el juego
+    game.width(10)
+    game.height(15)
+    game.cellSize(10)
+    game.start()
+    //todo esto se setea antes de cenzar el jego, no se puede cambiar desp
+
+
+}*/ //esto fue la base
+
+//----------------------------------------//
+//aca ya moldeo el juego del pacman
+import exampleClaseSabado.*
+
+program pacmanGame {
+	
+	// límites del juego
+	game.width(14)
+	game.height(8)
+	
+	// fondo
+	game.boardGround("pacmanBackground.jpg")
+
+    game.title("Pacman!")
+	
+
+    // personaje principal
+	game.addVisualCharacter(pacman) // se encarga de agregar la visual del personaje ppal/ antes creado como objeto
+	
+    // rivales
+	/*game.addVisual(new Rival(numero = 1))
+	game.addVisual(new Rival(numero = 2))*/
+
+    // rivales
+    const rivales = [new Rival(numero = 1), new Rival(numero = 2)]	
+	rivales.forEach { rival => 
+		game.addVisual(rival)
+		game.onCollideDo(rival, { personaje =>
+			personaje.perderVida()
+            if(personaje.juegoTerminado()) {
+                game.say(personaje,"LPM, CAGUÉ FUEGO!, FIN DEL JUEGO")
+                game.stop()
+            }
+		})
+		game.onTick(1.randomUpTo(5) * 1000, "movimiento", {
+			rival.acercarseA(pacman)
+		})
+	}
+	
+
+    //frutita
+    const cherrys = generadorDeFrutas.crear(10)
+	
+	cherrys.forEach { cherry =>  
+		game.addVisual(cherry)
+		game.onCollideDo(cherry, { personaje =>
+			personaje.aumentarVida()
+            cherry.serComida()
+   		})
+	}
+
+	// que arranque el juego!
+	game.start()
+	
+}
+
