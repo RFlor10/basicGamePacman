@@ -7,8 +7,13 @@ object pacman {
 	method perderVida() {
 		vidas = vidas - 1
 		game.say(self, "PERO QUE PELOTUDO SOY! Vidas: " + self.cantVidas().toString())
-		image = "pacman.png"
-		position = game.origin()
+		if (self.juegoTerminado()) {  // aca si me quedo sin vidas termina con la imagen de perdiste
+			position = game.origin()
+			
+		} else { 					  //  si todavia tengo vidas inicio en la posicion de inicio
+			image = "pacman.png"
+			position = game.origin()
+		}
 	}
 	method juegoTerminado() = vidas == 0
 

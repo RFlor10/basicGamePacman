@@ -14,6 +14,9 @@
 import exampleClaseSabado.*
 
 program pacmanGame {
+
+    var juegoActivo = true /* DECLARO QUE EL JUEGO ESTE ACTIVO PARA USARLO DESP
+     PARA DETENERLO PARA CAMBIAR EL FONDO DE FIN DE JUEGO*/
 	
 	// límites del juego
 	game.width(14)
@@ -40,11 +43,29 @@ program pacmanGame {
 			personaje.perderVida()
             if(personaje.juegoTerminado()) {
                 game.say(personaje,"LPM, CAGUÉ FUEGO!, FIN DEL JUEGO")
-                game.stop()
+
+               game.boardGround("TeCagasteMuriendo.jpg") // cambio la imagen de fondo // NO SE PUEDE
+
+                juegoActivo = false // APAGO EL JUEGO PARA DETENER EL ONTRICK
+
+                // Limpio las frutitas y los rivales para que no queden molestando arriba del fondo nuevo
+                rivales.forEach { r => game.removeVisual(r) }
+                cherrys.forEach { c => game.removeVisual(c) }
+
+                game.removeVisual(personaje)
+                
+                //IA, ivestigar bien eñ SCHEDULE
+                //  Usamos game.schedule para esperar unos segundos antes de frenar, 
+                // dándole tiempo a la pantalla a mostrar el fondo nuevo y el mensaje.
+                game.schedule(3000, {
+                    game.stop()
+                    })
             }
 		})
 		game.onTick(1.randomUpTo(5) * 1000, "movimiento", {
-			rival.acercarseA(pacman)
+            if (juegoActivo) {
+                rival.acercarseA(pacman)
+            }
 		})
 	}
 	
